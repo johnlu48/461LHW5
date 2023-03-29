@@ -13,28 +13,56 @@ import {
 function Project(props) {
   const [hardwareSet1, setHardwareSet1] = useState(props.hardwareSet1);
   const [hardwareSet2, setHardwareSet2] = useState(props.hardwareSet2);
-  const [checkinValue, setCheckinValue] = useState('');
-  const [checkoutValue, setCheckoutValue] = useState('');
+  const [checkinValue1, setCheckinValue1] = useState('');
+  const [checkoutValue1, setCheckoutValue1] = useState('');
+  const [checkinValue2, setCheckinValue2] = useState('');
+  const [checkoutValue2, setCheckoutValue2] = useState('');
   const [isJoined, setIsJoined] = useState(false);
 
-  const handleCheckin = (setHardwareSet) => {
-    setHardwareSet(prevValue => prevValue + Number(checkinValue));
-    setCheckinValue('');
+  const handleCheckin1 = () => {
+    fetch(`/checkIn_hardware?projectId=${props.title}&qty=${checkinValue1}`)
+      .then(response => response.json())
+      .then(data => setHardwareSet1(prevValue => prevValue + Number(checkinValue1)))
+      .catch(error => console.log(error));
+    setCheckinValue1('');
   };
 
-  const handleCheckout = (setHardwareSet) => {
-    setHardwareSet(prevValue => prevValue - Number(checkoutValue));
-    setCheckoutValue('');
+  const handleCheckout1 = () => {
+    fetch(`/checkOut_hardware?projectId=${props.title}&qty=${checkoutValue1}`)
+      .then(response => response.json())
+      .then(data => setHardwareSet1(prevValue => prevValue - Number(checkoutValue1)))
+      .catch(error => console.log(error));
+    setCheckoutValue1('');
+  };
+
+  const handleCheckin2 = () => {
+    fetch(`/checkIn_hardware?projectId=${props.title}&qty=${checkinValue2}`)
+      .then(response => response.json())
+      .then(data => setHardwareSet2(prevValue => prevValue + Number(checkinValue2)))
+      .catch(error => console.log(error));
+    setCheckinValue2('');
+  };
+
+  const handleCheckout2 = () => {
+    fetch(`/checkOut_hardware?projectId=${props.title}&qty=${checkoutValue2}`)
+      .then(response => response.json())
+      .then(data => setHardwareSet2(prevValue => prevValue - Number(checkoutValue2)))
+      .catch(error => console.log(error));
+    setCheckoutValue2('');
   };
 
   const handleJoin = () => {
     setIsJoined(true);
-    props.joinProject(props.title);
+    fetch(`/joinProject?projectId=${props.title}`)
+      .then(response => response.json())
+      .catch(error => console.log(error));
   };
 
   const handleLeave = () => {
     setIsJoined(false);
-    props.leaveProject(props.title);
+    fetch(`/leaveProject?projectId=${props.title}`)
+      .then(response => response.json())
+      .catch(error => console.log(error));
   };
 
   return (
